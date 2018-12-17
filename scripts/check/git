@@ -1,0 +1,12 @@
+#!/bin/bash
+
+git_path=$(which git)
+
+if [ -z $git_path ]; then
+	echo "TODO: missing git"
+	exit 1
+fi
+
+touch .check-git
+
+exit 0
