@@ -4,10 +4,9 @@
 
 int main (int argc, char* argv[])
 {
+	cfg_base("/etc/solOS");
 
-	char 
-
-	cfg_base(
+	
 
 	return 0;
 }
