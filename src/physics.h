@@ -25,8 +25,28 @@ static inline void sls_tlerp(body_t* b, float dt, int buf_idx)
 	int t   = buf_idx % SLS_BODY_BUF_LEN;
 	int t_1 = (buf_idx + 1) % SLS_BODY_BUF_LEN; 
 
-	b0->buffer[t] = b0->buffer[t].lin.pos + b0->buffer[t].lin.vel * dt;
-	b0->
+	// TODO: compute expected location for next update time
+	//b0->buffer[t].lin.pos = b0->buffer[t].lin.pos + b0->buffer[t].lin.vel * dt;
+	//b0->buffer[t]
+}
+
+static inline void sls_nbody(
+	body_t* body,
+	body_t* bodies,
+	size_t  body_count,
+	int     buf_idx)
+{
+	int t   = buf_idx % SLS_BODY_BUF_LEN;
+	int t_1 = (buf_idx + 1) % SLS_BODY_BUF_LEN; 
+
+	for (int i = body_count; i--;)
+	{
+		// skip myself
+		if (body == bodies + i) { continue; }
+
+		v3f force = sls_gravitation_force(body, bodies + i, t_1);
+		sls_apply_force(body, force, t);
+	}
 }
 
 
