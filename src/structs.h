@@ -17,4 +17,13 @@ typedef struct {
 } body_t;
 
 
+typedef struct {
+	struct {
+		body_t* set;
+		size_t  count;
+	} bodies;
+
+} universe_t;
+
+
 #endif

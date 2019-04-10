@@ -1,8 +1,8 @@
 CC=gcc
 CFLAGS=
-INC=
+INC=-Iext/cfg.h/src -Isrc 
 LINK_DIR=
 LINK=
 
-%.o: %
+%.c.o: %.c
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@ $(LINK)
