@@ -13,20 +13,28 @@ which:
 .check_git:
 	$(shell scripts/check/git)
 
+.PHONY: deps
+deps: ext/cfg.h
+	@echo "Fetched deps"
+
 ext:
-	make -C .. $@
-	ln -s ../$@ $@
+	mkdir $@
 	
-bin:
+bin: deps
 	mkdir $@
 
-cfg.h: ext
-	git clone https://github.com/mrpossoms/cfg.h.git ext/$@
+ext/cfg.h: ext
+	git clone https://github.com/mrpossoms/cfg.h.git $@
 
-$(UNIT): $(OBJS)
+bin/slsd: $(OBJS)
 	@echo "Building" $@
 	$(CC) $(CFLAGS) $(INC) $(LINK_DIR) $^ -o $@ $(LINK)
 	@echo "Built" $@
 
+.PHONY: all
+all: bin bin/slsd 
+	@echo "Built all"
+
 clean:
+	rm -rf bin
 	rm -r src/*.o

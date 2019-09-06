@@ -4,8 +4,8 @@
 #include "common.h"
 
 typedef struct {
-	struct { v3f pos, vel } lin;
-	struct { v3f pos, vel } ang;
+	struct { v3f pos, vel; } lin;
+	struct { v3f pos, vel; } ang;
 } phys_t;
 
 #define SLS_BODY_BUF_LEN 2
