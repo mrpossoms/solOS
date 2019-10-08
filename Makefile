@@ -4,6 +4,9 @@ UNIT=$(shell basename ${PWD})
 SRCS=$(wildcard src/*.c)
 OBJS=$(SRCS:.c=.c.o)
 
+.PHONY: all
+all: bin bin/slsd 
+	@echo "Built all"
 
 .PHONY: which
 which:
@@ -30,10 +33,6 @@ bin/slsd: $(OBJS)
 	@echo "Building" $@
 	$(CC) $(CFLAGS) $(INC) $(LINK_DIR) $^ -o $@ $(LINK)
 	@echo "Built" $@
-
-.PHONY: all
-all: bin bin/slsd 
-	@echo "Built all"
 
 clean:
 	rm -rf bin

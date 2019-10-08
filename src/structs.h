@@ -25,5 +25,13 @@ typedef struct {
 
 } universe_t;
 
+typedef struct {
+	struct {
+		int16_t base_port;
+	} net;
+
+	universe_t uni;
+
+} state_t;
 
 #endif

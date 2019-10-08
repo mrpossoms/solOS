@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=
+CFLAGS=--std=c99 -D_POSIX_C_SOURCE=300000L
 INC=-Iext/cfg.h/src -Isrc 
 LINK_DIR=
 LINK=
