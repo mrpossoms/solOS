@@ -1,13 +1,44 @@
+#include <stdio.h>
 #include <sys/socket.h>
 #include <netdb.h>
 
 #include "net.h"
 #include "structs.h"
 
-static int setup_sockets(int udp, int tcp)
+static int bind_sockets(int tcp, int udp, uint16_t base_port)
 {
+	int socks[2] = { tcp, udp };
+	int protos[2] = { SOCK_STREAM, SOCK_DGRAM };
+
+	for (int i = 0; i < 2; i++)
+	{
+		uint16_t port = base_port + i;
+	
+		struct addrinfo *result, *rp;
+		struct addrinfo hints = {
+			.ai_family = AF_INET,
+			.ai_socktype = protos[i],
+			.ai_flags = AI_PASSIVE,
+		};
+
+		int res = getaddrinfo(NULL, "0.0.0.0", &hints, &result);
+
+		if (res)
+		{
+			fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(res));
+			goto setup_sock_fail;
+		}
+
+		for (struct addrinfo* rp = result; rp; rp = rp->ai_next)
+		{
+			if(bind(socks[i], rp->ai_addr, rp->ai_addrlen) == 0) { break; }
+		}
+	}	
 
 	return 0;
+
+setup_sock_fail:
+	return -1;
 }
 
 void* sls_network_loop(void* params)
@@ -27,7 +58,7 @@ void* sls_network_loop(void* params)
 		goto net_fail;
 	}
 
-	int res = setup_sockets(udp_sock, tcp_sock);
+	int res = bind_sockets(udp_sock, tcp_sock, state->net.base_port);
 	if (res)
 	{
 		goto net_fail;
